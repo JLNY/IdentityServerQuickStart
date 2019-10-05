@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -10,7 +12,9 @@ namespace IdentityServerIDP
         {
             return new IdentityResource[]
             {
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(), 
+                new IdentityResources.Phone(), 
             };
         }
 
@@ -45,6 +49,23 @@ namespace IdentityServerIDP
                         new Secret("secret".Sha256())
                     },
                     AllowedScopes = {"api1"}
+                },
+                new Client
+                {
+                    ClientId = "mvc",
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Phone,
+                    }
                 }
             };
         }
@@ -57,13 +78,25 @@ namespace IdentityServerIDP
                 {
                     SubjectId = "1",
                     Username = "alice",
-                    Password = "alicepwd"
+                    Password = "alicepwd",
+
+                    Claims = new []
+                    {
+                        new Claim("name", "alice"),
+                        new Claim("website", "https://alice.com"), 
+                    }
                 },
                 new TestUser
                 {
                     SubjectId = "2",
                     Username = "bob",
-                    Password = "bobpwd"
+                    Password = "bobpwd",
+
+                    Claims = new []
+                    {
+                        new Claim("name", "bob"),
+                        new Claim("website", "https://bob.com"),
+                    }
                 }
             };
         }
