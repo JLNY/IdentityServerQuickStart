@@ -8,7 +8,7 @@ namespace IdentityServerAPI.Controllers
     [Authorize]
     public class IdentityController : Controller
     {
-        [HttpGet]
+        //[HttpGet]
         public IActionResult Get()
         {
             return new JsonResult(from c in User.Claims select new { c.Type, c.Value});

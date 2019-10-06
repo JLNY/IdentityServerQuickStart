@@ -4,7 +4,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
-namespace IdentityServerIDP
+namespace IdentityServerWithAspNetIdentity
 {
     public static class Config
     {
@@ -55,6 +55,9 @@ namespace IdentityServerIDP
                     ClientId = "mvc",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+
+                    RequireConsent = false,
+
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
